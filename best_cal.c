@@ -3,6 +3,8 @@
 #define range_for_numbers(a) (48 <= a && a <= 57)
 #define operator_checker(a) (a == '+' || a == '-' || a == '*' || a == '/')
 
+int neg=1; //global variable for determining if the first value is negative or not.
+
 struct stack{
     char data[30];
     int val[30];
@@ -17,10 +19,11 @@ void postfix_converter(char processed_exp[],char *postfix,int n); // converts ex
 int precedence(char c);// return the precedence according to DMAS rule.
 int calculate(char exp[],int n); // calculates the postfix expression.
 
+
 int main()
 {
     char exp[30],processed_exp[30],postfix[30];
-    int neg_or_not[30],size_of_exp,size_of_processed_exp;
+    int size_of_exp,size_of_processed_exp;
 
     //taking expression.
     printf("Enter expression : ");
@@ -56,6 +59,7 @@ int size_finder(char exp[]){
     return n;
 }
 
+
 int space_remover(char exp[],char* processed_exp,int n){
     int size_of_processed_exp=0;
     for(int i=0;exp[i]!='\0';i++){
@@ -82,7 +86,6 @@ int multiple_operator_checker(char processed_exp[],int size_of_processed_exp){
             exit(0);
         }
     }
-    return 1;
 }
 
 //if operator is not encountered push the operand into stack. else if operator is found and precedence of
@@ -93,40 +96,47 @@ void postfix_converter(char processed_exp[],char *postfix,int n){
     int j=0; //index for postfix array.
     stk.top=-1;
 
+    //set the var neg to -1 if first value is negative.
+    if(processed_exp[0] == '-')
+        neg=-1;
+
     //scanning the expression.
     for(int i=0;i<n;i++){
-        if(range_for_numbers(processed_exp[i]) || (processed_exp[i] == '-' && (i == 0 || operator_checker(processed_exp[i-1])))){
-            if(processed_exp[i] == '-' && range_for_numbers(processed_exp[i+1])){
+        if(!operator_checker(processed_exp[i])){    
+            //while operator is not encountered keep putting the interger values.
+            while(i<n && !operator_checker(processed_exp[i])){
                 postfix[j++]=processed_exp[i++];
-                while(i<n && !operator_checker(processed_exp[i])){
-                    postfix[j++]=processed_exp[i++];
-                }
-                postfix[j++]=' ';
-                i--; //because after i-- i will point to next operator. 
             }
-            else{
-                while(i<n && !operator_checker(processed_exp[i])){
-                    postfix[j++]=processed_exp[i++];
-                }
-                postfix[j++]=' ';
-                i--;
+            postfix[j++]=' ';
+            i--;
+        }
+        else if(precedence(processed_exp[i]) <= precedence(stk.data[stk.top])){
+            while(precedence(processed_exp[i]) <= precedence(stk.data[stk.top])){
+                postfix[j]=stk.data[stk.top];
+                stk.top--;
+                j++;
             }
+            stk.top++;
+            stk.data[stk.top]=processed_exp[i];
         }
         else{
-            while (stk.top > -1 && precedence(stk.data[stk.top]) >= precedence(processed_exp[i])) {
-                postfix[j++] = stk.data[stk.top--];
-            }
-            stk.data[++stk.top] = processed_exp[i];
+            stk.top++;
+            stk.data[stk.top]=processed_exp[i];
         }
     }
     //after scanning empty the stack
     while(stk.top > -1){
-        postfix[j++]=stk.data[stk.top--];
+        postfix[j]=stk.data[stk.top];
+        stk.top--;j++;
     }
- 
+    if(neg == -1) j--; // if first value is negative last character then in postfix expression the last character
+                       // will be '-' which will result in wrong answer. so we place the '\0' character after 
+                       // performing j--;   
+
     postfix[j]='\0'; //putting the terminating character at end of postfix string.
     // printf("\n\nsize of postfix : %d",size_finder(postfix));
 }
+
 
 int precedence(char c){
     //DMAS rule
@@ -144,31 +154,29 @@ int precedence(char c){
     }
 }
 
+
 int calculate(char exp[],int n){
     struct stack stk;
     stk.top=-1;
     for(int i = 0; exp[i]!='\0'; i++){
-        // if operator is not present.
-        if(range_for_numbers(exp[i]) || (exp[i] == '-' && range_for_numbers(exp[i+1]))){
+        // if opertor is present.
+        if(!operator_checker(exp[i])){
             int temp=0;
-            int sign=1;
-            if(exp[i] == '-'){
-                 sign=-1;i++;
-            }
             // making a whole digit.
-            while(i<n && exp[i] != ' '){
+            while(exp[i] != ' '){
                 temp=temp*10+exp[i++]-'0';
             }
             // printf("\nVAR : %d\n",temp);
-            stk.val[++stk.top]=temp*sign;
-            
+            stk.val[++stk.top]=temp*neg;
+            neg=1; // neg will be 1 because we only need to check if the first value is negative.After that all 
+                   // values are will be handled. 
         }
         // if operator is encountered.
-        else if(operator_checker(exp[i])){
+        else{
             int which_op=precedence(exp[i]);
             int var1=stk.val[stk.top--];
             int var2=stk.val[stk.top--];
-            printf("\nvar1 : %d , var2 : %d\n",var1,var2);
+            //printf("\nvar1 : %d , var2 : %d\n",var1,var2);
             switch (which_op)
             {
                 case 0:
