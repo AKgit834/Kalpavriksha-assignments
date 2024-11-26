@@ -6,18 +6,18 @@
 void create();
 void read();
 void update();
-void delete();
+void delete(int id);
 int findID(int id);
 
 struct user{
     int id;
-    char name[40];
+    char name[60];
     int age;
 };
 
 int main()
 {
-    int ch;
+    int ch,t;
     while(1){
         printf("\n1. Add a new user.\n2. Display all users.");
         printf("\n3. Update a user.\n4. Delete a user.\n0 for exiting.");
@@ -34,7 +34,9 @@ int main()
                 update();
                 break;
             case 4:
-                delete();
+                printf("Enter the ID of user : ");
+                scanf("%d",&t);
+                delete(t);
                 break;
             default:
                 exit(1);
@@ -70,20 +72,44 @@ void read(){
 }
 
 void update(){
-    printf("Update function is called\n");
-}
-
-void delete(){
-    int line,id,cnt=0;
-    FILE *f,*fp;
+    struct user u;
+    int line,cnt=0;
     char str[50];
 
-    printf("Enter the ID of user : ");
-    scanf("%d",&id);
+    printf("Enter the id of user : ");
+    scanf("%d",&u.id);
+    printf("Enter the new age and name with space : ");
+    scanf("%d",&u.age);
+    gets(u.name);
+
+    line=findID(u.id);
+    // delete(u.id);
+
+    FILE *f=fopen("users.txt","r");
+    FILE *fp=fopen("temp.txt","w");
+
+    while(fgets(str,50,f) != NULL){
+        cnt++;
+        if(line == cnt){
+            delete(u.id);
+            fprintf(fp,"%d %s %d\n",u.id,u.name,u.age);
+        }
+        else
+            fputs(str,fp);
+    }
+    fclose(f);fclose(fp);
+    remove("users.txt");
+    rename("temp.txt","users.txt");
+
+}
+
+void delete(int id){
+    int line,cnt=0;
+    FILE *f,*fp;
+    char str[50];
     
     //finding the line where the id present.
     line=findID(id);
-    // printf("\nID %d found on line : %d\n",id,line);
     f=fopen("temp.txt","w");
     if(f == NULL) printf("cannot open temp file for writing.");
     fp=fopen("users.txt","r");
@@ -115,6 +141,7 @@ int findID(int id) {
         //ID found.
         if(temp == id){
             fclose(f);
+            // printf("\nID %d found on line : %d\n",id,line);
             return line;
         }
     }
