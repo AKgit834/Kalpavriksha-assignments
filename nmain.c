@@ -77,9 +77,11 @@ void delete(){
     int line,id,cnt=0;
     FILE *f,*fp;
     char str[50];
+
     printf("Enter the ID of user : ");
     scanf("%d",&id);
     
+    //finding the line where the id present.
     line=findID(id);
     // printf("\nID %d found on line : %d\n",id,line);
     f=fopen("temp.txt","w");
@@ -88,6 +90,7 @@ void delete(){
     if(fp == NULL) printf("cannot open users file for reading.");
     while(fgets(str,50,fp) != NULL){
         cnt++;
+        // if line no. is found don't copy that line.
         if(line != cnt){
             fputs(str,f);
         }
@@ -109,6 +112,7 @@ int findID(int id) {
         while(range_for_numbers(str[i])){
             temp=temp*10+str[i++]-'0';
         }
+        //ID found.
         if(temp == id){
             fclose(f);
             return line;
