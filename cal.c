@@ -44,7 +44,7 @@ int main()
         printf("\nevaluated value is : %d\n",calculate(postfix,size_finder(postfix)));
     }
     else   
-        printf("\aInvalid character present !!");
+        printf("\aInvalid character are present !!");
     return 0;
 }
 
