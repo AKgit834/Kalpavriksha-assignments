@@ -20,7 +20,7 @@ int calculate(char exp[],int n); // calculates the postfix expression.
 int main()
 {
     char exp[30],processed_exp[30],postfix[30];
-    int neg_or_not[30],size_of_exp,size_of_processed_exp;
+    int size_of_exp,size_of_processed_exp;
 
     //taking expression.
     printf("Enter expression : ");
@@ -28,9 +28,12 @@ int main()
 
     //getting size of expression.
     size_of_exp=size_finder(exp); 
-
     //removing spaces and getting the size of processed expression.
     size_of_processed_exp=space_remover(exp,processed_exp,size_of_exp);
+    if(size_of_processed_exp == 0 || size_of_exp == 0){
+        printf("invalid expression");
+        exit(0);
+    }
     // printf("\ngiven exp is : %s\nprocessed exp is : %s\n",exp,processed_exp);
 
     //checking for invalid characters.
