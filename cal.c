@@ -19,18 +19,27 @@ int calculate(char exp[],int n); // calculates the postfix expression.
 
 int main()
 {
-    char exp[30],processed_exp[30],postfix[30];
-    int size_of_exp,size_of_processed_exp;
+    char c,*exp=NULL,*temp=NULL,processed_exp[50],postfix[50];
+    int size_of_exp,size_of_processed_exp,len=0;
 
     //taking expression.
     printf("Enter expression : ");
-    gets(exp);
+    while(scanf("%c",&c) == 1 && c!='\n'){
+        // printf("inside loop");
+        exp=(char *)realloc(exp,len+2);
+        exp[len]=c;
+        len++;
+    }
+    if(len == 0){
+        printf("invalid expression");
+        exit(0);
+    }
 
     //getting size of expression.
-    size_of_exp=size_finder(exp); 
+    size_of_exp=len; 
     //removing spaces and getting the size of processed expression.
     size_of_processed_exp=space_remover(exp,processed_exp,size_of_exp);
-    if(size_of_processed_exp == 0 || size_of_exp == 0){
+    if(size_of_processed_exp == 0 ){
         printf("invalid expression");
         exit(0);
     }
