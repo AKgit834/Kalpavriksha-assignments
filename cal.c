@@ -34,16 +34,19 @@ int main()
         printf("invalid expression");
         exit(0);
     }
+    exp[len]='\0';
 
     //getting size of expression.
     size_of_exp=len; 
     //removing spaces and getting the size of processed expression.
     size_of_processed_exp=space_remover(exp,processed_exp,size_of_exp);
-    if(size_of_processed_exp == 0 ){
+    if(size_of_processed_exp == 0 || size_of_processed_exp == 2){
         printf("invalid expression");
         exit(0);
     }
-    // printf("\ngiven exp is : %s\nprocessed exp is : %s\n",exp,processed_exp);
+    if((operator_checker(processed_exp[0]) && processed_exp[0] != '-') || operator_checker(processed_exp[size_of_processed_exp-1]))
+    	{printf("Invalid expression");return 0;}
+    printf("\ngiven exp is : %s\nprocessed exp is : %s\n",exp,processed_exp);
 
     //checking for invalid characters.
     if(checker(processed_exp,size_of_processed_exp) && multiple_operator_checker(processed_exp,size_of_processed_exp)){
@@ -82,7 +85,10 @@ int space_remover(char exp[],char* processed_exp,int n){
 
 int checker(char exp[],int n){
     for(int i=0;i<n;i++){
-        if(!range_for_numbers(exp[i]) && !operator_checker(exp[i])) return 0;
+        if(!range_for_numbers(exp[i]) && !operator_checker(exp[i])){
+		printf("returning zero");
+		return 0;
+	}
     }
     return 1;
 }
