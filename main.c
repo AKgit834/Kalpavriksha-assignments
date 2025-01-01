@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<malloc.h>
 
 void power(int , int ,int);// funciton for calculating power.
 int multiply(int ,int [],int );//for multiplying the number again and again.
@@ -27,11 +28,12 @@ int main()
 
 
 void power(int b,int n,int m) {
-    int res[10000]; // stores the calculated number.
+    int *res=malloc(sizeof(int)); // stores the calculated number.
     int size=0,temp=b;
 
     //entering values in array.
     while(temp){
+        res=realloc(res,size+1);
         res[size]=temp%10;
         temp=temp/10;
         size++;
@@ -47,6 +49,7 @@ void power(int b,int n,int m) {
     printf("\n");
 
     printf("\nremainder of %d^%d mod %d is : %d",b,n,m,mod(res,size,m));
+    free(res);
 }
 
 int multiply(int b,int res[],int size){
