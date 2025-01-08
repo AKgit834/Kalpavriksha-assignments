@@ -11,25 +11,39 @@ int main() {
     scanf("%d",&row);
     printf("enter number of cols: ");
     scanf("%d",&col);
-    
+    getchar();
+
     char mat[row][col][51];
     
-    for(int i=0;i<row;i++)
+    for(int i=0;i<row;i++){
         for(int j=0;j<col;j++)
         {
+            
             printf("name at (%d,%d) : ",i,j);
-            if(scanf("%s",mat[i][j]) != 1 ){
-                printf("enter correct outputs");
-                return 0;
-            }
+            fgets(mat[i][j],50,stdin);
+            
+            mat[i][j][strlen(mat[i][j])-1]='\0';
+            
             for(char *c=mat[i][j];*c!='\0';c++){
                 if(range_for_number(*c)){
-                    printf("enter correct outputs");
+                    printf("enter correct input");
                     return 0;
                 }
             }
-        }
+            int flg=1;
+            for(char *c=mat[i][j];*c!='\0';c++){
+                if(*c != ' '){
+                    flg=0;
+                    break;
+                }
+            }
+            if(flg){
+                printf("blank string error");
+                return 0;
+            }
             
+        }
+    }
     printf("\n");
     
     for(int i=0;i<row;i++){
@@ -57,13 +71,13 @@ int main() {
                 
         }
     }
-    printf("\nlongest string is : %s",mat[rindx][cindx]);
+    printf("\n\nlongest string is : %s",mat[rindx][cindx]);
     return 0;
 }
 
 
 int vowels(char a){
-    if(a == 'a' || a=='e' || a=='i' || a=='o' || a=='u')
+    if(a == 'a' || a=='e' || a=='i' || a=='o' || a=='u' || a == 'A' || a=='E' || a=='I' || a=='O' || a=='U' )
         return 1;
     return 0;
 }
