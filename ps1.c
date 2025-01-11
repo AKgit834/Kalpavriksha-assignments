@@ -1,8 +1,10 @@
 #include<stdio.h>
 #include<malloc.h>
 
+void small_case_converter(char *,int);
 void dup_remover(char *inp);
 int dup_checker(char *str,char c);
+
 
 
 int main()
@@ -21,8 +23,16 @@ int main()
         return 0;
     }
     inp[inp_size]='\0';
+    small_case_converter(inp,inp_size);
     dup_remover(inp);
     return 0;
+}
+
+void small_case_converter(char *str,int int_size){
+    int indx=0;
+    if(str[indx] >=65 && str[indx] <=90){
+        str[indx]=str[indx]-'A'+'a';
+    }
 }
 
 
