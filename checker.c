@@ -1,62 +1,50 @@
 #include<stdio.h>
-#include<malloc.h>
 
-char* take_str_inp(int *);
-void concatenate(char *,char *,int);
+int str_len(char []);
+void concatenate(char [],char *,int);
 int sub_string_finder(char *str,char *sub_str);
 
 int main()
 {
-    char *str1=(char*)malloc(sizeof(char)),*str2=(char*)malloc(sizeof(char));
+    char str1[100],str2[100];
     int str1_size,str2_size;
 
     printf("Enter first string : ");
-    str1=take_str_inp(&str1_size);
+    scanf("%[^\n]s",str1);
+    getchar();
     printf("Enter second string : ");
-    str2=take_str_inp(&str2_size);
+    scanf("%[^\n]s",str2);
 
+    str1_size=str_len(str1);
+    str2_size=str_len(str2);
     if(str1_size != str2_size){
         printf("false");
         return 0;
     }
 
-    // printf("string1 is : %s with size : %d\n",str1,str1_size);
-    // printf("string2 is : %s with size : %d\n",str2,str2_size);
+    printf("string1 is : %s with size : %d\n",str1,str1_size);
+    printf("string2 is : %s with size : %d\n",str2,str2_size);
 
-    char *concated_str=(char*)malloc(sizeof(char)*(2*str1_size + 1));
+    char concated_str[200];
     concatenate(str1,concated_str,str1_size);
-    // printf("\nconcated string is : %s\n",concated_str);
+    printf("\nconcated string is : %s\n",concated_str);
     int ans=sub_string_finder(concated_str,str2);
-    if(ans>0)
+    if(ans!=-1)
         printf("true");
     else
         printf("false");
-    
-    free(str1);free(str2);free(concated_str);
 
     return 0;
 }
 
-
-char* take_str_inp(int *str_size){
-    char *str=(char*)malloc(sizeof(char)),c;
-    *str_size=0;
-    while(scanf("%c",&c) && c!='\n'){
-        str=(char*)realloc(str,sizeof(char)*(*str_size+1));
-        if (str == NULL) {
-            printf("memory allocation failed\n");
-            return NULL;
-        }
-        str[*str_size]=c;
-        (*str_size)++;
-    }
-    str[*str_size]='\0';
-    return str;
+int str_len(char str[]){
+    int cnt=0;
+    for(int i=0;str[i]!='\0';i++)
+        cnt++;
+    return cnt;
 }
 
-
-void concatenate(char *str,char *concated_str,int str_size){
-    // printf("inside concate");
+void concatenate(char str[],char *concated_str,int str_size){
     for (int i = 0; i < str_size; i++) {
         concated_str[i] = str[i];
     }
