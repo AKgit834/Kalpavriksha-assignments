@@ -59,7 +59,6 @@ void longest_word_finder(char *str,int str_size){
         while(str[i] != ' ' && str[i] !='\0' && i<str_size){
             words[words_indx].word[indx]=str[i];
             indx++;
-            printf("i: %d for char %c\n",i,str[i]);
             i++;
         }
 
