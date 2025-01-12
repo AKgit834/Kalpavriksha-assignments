@@ -24,6 +24,8 @@ int main()
     else{
         printf("false");
     }
+    free(str1);
+    free(str2);
 
     return 0;
 }
