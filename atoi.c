@@ -2,7 +2,6 @@
 #include<malloc.h>
 #define range_for_number(a) (a>='0' && a<='9')
 
-int flag=1;
 int atoi_func(char []);
 
 int main()
@@ -19,10 +18,8 @@ int main()
     str[str_size]='\0';
 
     int ans=atoi_func(str);
-    if(flag == 1)
-        printf("int is : %d",ans);
-    else
-        printf("invalid characters present");
+
+    printf("int is : %d",ans);
     return 0;
 }
 
@@ -38,8 +35,7 @@ int atoi_func(char str[]){
             temp=temp*10+(str[i]-'0');
         }
         else {
-            flag=0;
-            return -1;
+            return 0;
         }
     }
     return temp*sign;
