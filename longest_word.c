@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<malloc.h>
+#include<stdlib.h>
 
 typedef struct map{
     char word[50];
@@ -7,7 +7,7 @@ typedef struct map{
 }map;
 
 char* take_str_inp(int *str_size);
-void longest_word_finder(char*);
+void longest_word_finder(char*,int);
 
 int main()
 {
@@ -16,7 +16,7 @@ int main()
     printf("Enter string : ");
     str=take_str_inp(&str_size);
 
-    longest_word_finder(str);
+    longest_word_finder(str,str_size);
     free(str);
 
     return 0;
@@ -47,23 +47,21 @@ char* take_str_inp(int *str_size){
 }
 
 
-void longest_word_finder(char *str){
+void longest_word_finder(char *str,int str_size){
     map words[30];
     int words_indx=0;
     int mx_len_word_indx=0,mx_len=0;
 
     for(int i=0;str[i]!='\0';i++){
-        
         if(str[i] == ' ') continue;
 
         int indx=0;
-        while(str[i] != ' ' && str[i] !='\0'){
+        while(str[i] != ' ' && str[i] !='\0' && i<str_size){
             words[words_indx].word[indx]=str[i];
             indx++;
-             i++;
+            printf("i: %d for char %c\n",i,str[i]);
+            i++;
         }
-        
-        i--;
 
         words[words_indx].word[indx]='\0';
         words[words_indx].len=indx;
@@ -72,7 +70,7 @@ void longest_word_finder(char *str){
             mx_len=words[words_indx].len;
         }
         words_indx++;
-        }
+    }
     printf("max len word is : %s",words[mx_len_word_indx].word);
 }
 
