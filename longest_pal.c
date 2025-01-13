@@ -1,6 +1,5 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
 
 
 char *take_str_inp(int*);
@@ -68,7 +67,9 @@ int longest_palindrome(char str[],int str_size){
             int len=palindrome_checker(arr,indx);
             if(len > mx_len){
                 mx_len=len;
-                strcpy(longest_pal,arr);
+                for(int j=0;j<indx;j++){
+                    longest_pal[j]=arr[j];
+                }
             }
         }
     }
