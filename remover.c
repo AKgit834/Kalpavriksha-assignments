@@ -2,8 +2,8 @@
 #include<stdlib.h>
 
 char* take_str_inp(int *);
-int remove_adj_dup(char*,int);
-void rem_all_dup(char* ,int);
+int remove_adj_dup(char [],int);
+void rem_all_dup(char [],int);
 
 
 int main() {
@@ -45,7 +45,7 @@ char* take_str_inp(int *str_size){
 
 
 
-int remove_adj_dup(char* str,int str_size) {
+int remove_adj_dup(char str[],int str_size) {
     int flag = 0;
     int read_pos = 0,write_pos = 0;
     
@@ -69,7 +69,7 @@ int remove_adj_dup(char* str,int str_size) {
     return flag;
 }
 
-void rem_all_dup(char* str,int str_size) {
+void rem_all_dup(char str[],int str_size) {
     while (remove_adj_dup(str,str_size));
 }
 
