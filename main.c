@@ -8,13 +8,21 @@ int mod(int [],int ,int );// calculating mod.
 
 int main()
 {
-    int b,m,n,last;
+    int b,m,n;
 
     //taking input.
     printf("Enter vlaue of b , n and m : ");
     if(scanf("%d%d%d",&b,&n,&m) != 3){
         printf("invalid input in scanf");
         return 0;
+    }
+    if(n == 0){
+        printf("\nremainder of %d^%d mod %d is : 1",b,n,m);
+        return 1;
+    }
+    if(b == 0){
+        printf("\nremainder of %d^%d mod %d is : 0",b,n,m);
+        return 1;
     }
     printf("b: %d, n: %d, m: %d",b,n,m);
     if(b<0 || n<0 || m<=1){
