@@ -1,0 +1,95 @@
+#include<stdio.h>
+#include<malloc.h>
+
+void power(int , int ,int);// funciton for calculating power.
+int multiply(int ,int [],int );//for multiplying the number again and again.
+int mod(int [],int ,int );// calculating mod.
+
+
+int main()
+{
+    int b,m,n;
+
+    //taking input.
+    printf("Enter vlaue of b , n and m : ");
+    if(scanf("%d%d%d",&b,&n,&m) != 3){
+        printf("invalid input in scanf");
+        return 0;
+    }
+    if(b == 0){
+        printf("\nremainder of %d^%d mod %d is : 0",b,n,m);
+        return 1;
+    }
+    if(n == 0){
+        printf("\nremainder of %d^%d mod %d is : 1",b,n,m);
+        return 1;
+    }
+
+    printf("b: %d, n: %d, m: %d",b,n,m);
+    if(b<0 || n<0 || m<=1){
+        printf("invalid input in value");
+        return 0;
+    }
+
+    power(b,n,m);
+    return 0;
+}
+
+
+void power(int b,int n,int m) {
+    int size=0,temp=b,capacity=n;
+    int *res=(int*)malloc(sizeof(int)*capacity); // stores the calculated number.
+
+
+    //entering values in array.
+    while(temp){
+        if(size >=capacity){
+            capacity=2*capacity;
+            res=(int*)realloc(res,sizeof(int)*capacity);
+        }
+        res[size]=temp%10;
+        temp=temp/10;
+        size++;
+    }
+
+    for(int i=2;i<=n;i++)
+        size=multiply(b,res,size);
+
+    //printing the value.
+    printf("\n\npower is : ");
+    for(int i=size-1;i>=0;i--)
+        printf("%d",res[i]);
+    printf("\n");
+
+    printf("\nremainder of %d^%d mod %d is : %d",b,n,m,mod(res,size,m));
+    free(res);
+
+}
+
+int multiply(int b,int *res,int size){
+    int product,carry=0;
+
+    //multiplying every digit in res[] with the base.
+    for(int i=0;i<size;i++){
+        product=res[i]*b+carry;
+        carry=product/10;
+        res[i]=product%10;
+    }
+
+    //handling remaining carry.
+    while(carry){
+        res[size]=carry%10;
+        carry=carry/10;
+        size++;
+    }
+    return size;
+}
+
+
+int mod(int *res,int size,int m){
+    int rem=0;
+    for(int i=size-1;i>=0;i--)
+        rem=(rem*10+res[i])%m;
+    return rem;
+}
+
