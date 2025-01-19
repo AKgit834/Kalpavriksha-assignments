@@ -16,6 +16,7 @@ void add_at_pos(node **,int,int);
 void update_at_pos(node **,int,int);
 void delete_at_beg(node **);
 void delete_at_end(node **);
+void delete_at_pos(node**,int);
 
 
 int main()
@@ -26,7 +27,7 @@ int main()
     scanf("%d",&n);
     printf("1. Add at end\n2. Add at beginning\n3. Add at pos");
     printf("\n4. Display Linked List\n5. Update at pos\n6. Delete at beginning");
-    printf("\n7. Delete at end\n ");
+    printf("\n7. Delete at end\n8. Delete at Position\n");
     for (int  i = 0; i < n; i++)
     {
         int choice,pos,val;
@@ -72,6 +73,12 @@ int main()
             delete_at_end(&head);
             break;
 
+        case 8:
+            printf("Enter position : ");
+            scanf("%d",&pos);
+            delete_at_pos(&head,pos);
+            break;
+
         default:
             break;
         }
@@ -79,7 +86,6 @@ int main()
 
     return 0;
 }
-
 
 
 void print_LL(node* head){
@@ -92,7 +98,6 @@ void print_LL(node* head){
         temp=temp->next;
     }
 }
-
 
 void add_at_end(node **head,int val){
     node* temp2=(node*)malloc(sizeof(node));
@@ -109,7 +114,6 @@ void add_at_end(node **head,int val){
     temp->next=temp2;
 }
 
-
 void add_at_beg(node **head,int val){
     node *temp=(node*)malloc(sizeof(node));
     temp->next=*head;
@@ -120,7 +124,6 @@ void add_at_beg(node **head,int val){
     }
     *head=temp;
 }
-
 
 void add_at_pos(node **head,int pos,int val){
     if(pos == 1){
@@ -142,7 +145,6 @@ void add_at_pos(node **head,int pos,int val){
     temp2->next=temp->next;
     temp->next=temp2;
 }
-
 
 void update_at_pos(node **head,int pos,int val){
     if((*head) == NULL){
@@ -166,7 +168,6 @@ void update_at_pos(node **head,int pos,int val){
     temp->val=val;
     return;
 }
-
 
 void delete_at_beg(node **head){
     if((*head) == NULL){
@@ -192,3 +193,31 @@ void delete_at_end(node **head){
     temp->next=NULL;
 
 }
+
+void delete_at_pos(node** head,int pos){
+    if((*head) == NULL){
+        return;
+    }else if(pos == 1){
+        delete_at_beg(head);
+        return;
+    }
+
+    pos-=2;
+    node *temp=*head;
+    while(pos && temp->next){
+        temp=temp->next;
+        pos--;
+        if(temp == NULL && pos >=0){
+            printf("Position out of bound");
+            return;
+        }
+    }
+    if(temp->next == NULL){
+        printf("Position out of bound");
+        return;
+    }
+    temp->next=temp->next->next;
+
+}
+
+
