@@ -16,14 +16,15 @@ int main()
         printf("invalid input in scanf");
         return 0;
     }
-    if(n == 0){
-        printf("\nremainder of %d^%d mod %d is : 1",b,n,m);
-        return 1;
-    }
     if(b == 0){
         printf("\nremainder of %d^%d mod %d is : 0",b,n,m);
         return 1;
     }
+    if(n == 0){
+        printf("\nremainder of %d^%d mod %d is : 1",b,n,m);
+        return 1;
+    }
+
     printf("b: %d, n: %d, m: %d",b,n,m);
     if(b<0 || n<0 || m<=1){
         printf("invalid input in value");
@@ -36,12 +37,16 @@ int main()
 
 
 void power(int b,int n,int m) {
-    int res[1000]; // stores the calculated number.
-    int size=0,temp=b;
+    int size=0,temp=b,capacity=n;
+    int *res=(int*)malloc(sizeof(int)*capacity); // stores the calculated number.
 
 
     //entering values in array.
     while(temp){
+        if(size >=capacity){
+            capacity=2*capacity;
+            res=(int*)realloc(res,sizeof(int)*capacity);
+        }
         res[size]=temp%10;
         temp=temp/10;
         size++;
@@ -57,10 +62,11 @@ void power(int b,int n,int m) {
     printf("\n");
 
     printf("\nremainder of %d^%d mod %d is : %d",b,n,m,mod(res,size,m));
+    free(res);
 
 }
 
-int multiply(int b,int res[],int size){
+int multiply(int b,int *res,int size){
     int product,carry=0;
 
     //multiplying every digit in res[] with the base.
@@ -80,7 +86,7 @@ int multiply(int b,int res[],int size){
 }
 
 
-int mod(int res[],int size,int m){
+int mod(int *res,int size,int m){
     int rem=0;
     for(int i=size-1;i>=0;i--)
         rem=(rem*10+res[i])%m;
