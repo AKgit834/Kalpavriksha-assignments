@@ -24,7 +24,10 @@ int main()
     node *head=NULL;
     int n;
     printf("Enter no. of operations to perform : ");
-    scanf("%d",&n);
+    if(scanf("%d",&n) == 0){
+        printf("invalid input provided\n");
+        return 0;
+    }
     printf("1. Add at end\n2. Add at beginning\n3. Add at pos");
     printf("\n4. Display Linked List\n5. Update at pos\n6. Delete at beginning");
     printf("\n7. Delete at end\n8. Delete at Position\n");
@@ -32,24 +35,39 @@ int main()
     {
         int choice,pos,val;
         printf("\nEnter choice : ");
-        scanf("%d",&choice);
+        if(scanf("%d",&choice) == 0){
+            printf("invalid input provided\n");
+            return 0;
+        }
         switch(choice)
         {
         case 1:
             printf("enter val : ");
-            scanf("%d",&val);
+            if(scanf("%d",&val) == 0){
+                printf("invalid input provided\n");
+                return 0;
+            }
             add_at_end(&head,val);
             break;
         case 2:
             printf("enter val : ");
-            scanf("%d",&val);
+            if(scanf("%d",&val) == 0){
+                printf("invalid input provided\n");
+                return 0;
+            }
             add_at_beg(&head,val);
             break;
         case 3:
             printf("Enter position : ");
-            scanf("%d",&pos);
+            if(scanf("%d",&pos) == 0){
+                printf("invalid input provided\n");
+                return 0;
+            }
             printf("Enter val : ");
-            scanf("%d",&val);
+            if(scanf("%d",&val) == 0){
+                printf("invalid input provided\n");
+                return 0;
+            }
             add_at_pos(&head,pos,val);
             break;
 
@@ -59,9 +77,15 @@ int main()
 
         case 5:
             printf("Enter position : ");
-            scanf("%d",&pos);
+            if(scanf("%d",&pos) == 0){
+                printf("invalid input provided\n");
+                return 0;
+            }
             printf("Enter val : ");
-            scanf("%d",&val);
+            if(scanf("%d",&val) == 0){
+                printf("invalid input provided\n");
+                return 0;
+            }
             update_at_pos(&head,pos,val);
             break;
 
@@ -75,7 +99,10 @@ int main()
 
         case 8:
             printf("Enter position : ");
-            scanf("%d",&pos);
+            if(scanf("%d",&pos) == 0){
+                printf("invalid input provided\n");
+                return 0;
+            }
             delete_at_pos(&head,pos);
             break;
 
