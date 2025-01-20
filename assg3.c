@@ -13,8 +13,10 @@ int main() {
     scanf("%d",&col);
     getchar();
 
-    char mat[row][col][51];
+
+    char mat[row][col][61];
     
+
     for(int i=0;i<row;i++){
         int loop_flg=0;
         for(int j=0;j<col;j++)
