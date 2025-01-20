@@ -12,19 +12,17 @@ int main()
     int inp_size=0,ans_size=0;
     int capacity=10;
     char *inp=(char*)malloc(sizeof(char)*capacity);
-    printf("Enter string : ");
-    while(scanf("%c",&c) == 1 && c != '\n'){
-        if(inp_size >= capacity){
-            capacity=2*capacity;
-            inp=(char*)realloc(inp,sizeof(char)*(capacity+1));
-        }
-        inp[inp_size]=c;
-        inp_size++;
-        
-    }
-    if(inp_size == 0){
-        printf("Empty expression");
-        return 0;
+
+    while(inp_size == 0){
+        printf("Enter string : ");
+        while(scanf("%c",&c) == 1 && c != '\n'){
+            if(inp_size >= capacity){
+                capacity=2*capacity;
+                inp=(char*)realloc(inp,sizeof(char)*(capacity+1));
+            }
+            inp[inp_size]=c;
+            inp_size++;
+        }   
     }
     inp[inp_size]='\0';
     to_lower_case(inp,inp_size);
