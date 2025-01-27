@@ -1,79 +1,83 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-typedef struct node{
-    int val;
-    struct node* next;
-}node;
+typedef struct ListNode {
+    int value;
+    struct ListNode* next;
+} ListNode;
 
-void make_LL(node**);
-void print_LL(node*);
-void bubble_sort(node *);
+void createLinkedList(ListNode** );
+void printLinkedList(ListNode* );
+void bubbleSortOnLinkedList(ListNode *);
 void swap(int *,int *);
+void freeMemory(ListNode* ); 
 
 
 int main()
 {
-    node* head=NULL;
+    ListNode* head=NULL;
     printf("Enter elements : ");
-    make_LL(&head);
-    bubble_sort(head);
-    print_LL(head);
+    createLinkedList(&head);
+
+    bubbleSortOnLinkedList(head);
+    printLinkedList(head);
+    freeMemory(head);
     
     return 0;
 }
 
 
+void createLinkedList(ListNode** head) {
+    ListNode* currentListNode = NULL;
+    int inputValue;
+    
+    while(scanf("%d", &inputValue) == 1) {
+        
+        ListNode* newListNode = (ListNode*)malloc(sizeof(ListNode));
+        newListNode->value = inputValue;
+        newListNode->next = NULL;
 
-
-void make_LL(node **head){
-    node *temp=NULL;
-    int val;
-    while(scanf("%d",&val) == 1){
-        node* temp2=(node*)malloc(sizeof(node));
-        temp2->val=val;
-        temp2->next=NULL;
-
-        if(!(*head)){
-            temp=temp2;
-            *head=temp2;
+        if(*head == NULL) {
+            currentListNode = newListNode;
+            *head = newListNode;
         }
-        else{
-            temp->next=temp2;
-            temp=temp2;
+        else {
+            currentListNode->next = newListNode;
+            currentListNode = newListNode;
         }
-        if(getchar() == '\n'){
-            break;
-        }
+        
+        if(getchar() == '\n') break;
     }
 }
 
-void print_LL(node *head){
-    node* temp=head;
-    while(temp){
-        if(temp->next) printf("%d->",temp->val);
-        else printf("%d",temp->val);
-        temp=temp->next;
+void printLinkedList(ListNode* head) {
+    ListNode* currentListNode = head;
+    while(currentListNode) {
+        if(currentListNode->next) 
+            printf("%d->", currentListNode->value);
+        else 
+            printf("%d", currentListNode->value);
+        currentListNode = currentListNode->next;
     }
 }
 
 
-void bubble_sort(node *head){
-    node* temp=head;
-    while(temp->next){
+void bubbleSortOnLinkedList(ListNode *head){
+    ListNode* currentNode=head;
+    while(currentNode->next){
         int swapped=0;
-        node* temp2=head;
-        while(temp2->next){
-            if(temp2->val > temp2->next->val){
-                swap(&(temp2->val),&(temp2->next->val));
+        ListNode* comparisionNode=head;
+        while(comparisionNode->next){
+            if(comparisionNode->value > comparisionNode->next->value){
+                swap(&(comparisionNode->value),&(comparisionNode->next->value));
                 swapped=1;
             }
-            temp2=temp2->next;
+            comparisionNode=comparisionNode->next;
         }
         if(!swapped){
             break;
         }
-        temp=temp->next;
+        currentNode=currentNode->next;
     }
 }
 
@@ -82,4 +86,12 @@ void swap(int *x,int *y){
     int temp=*x;
     *x=*y;
     *y=temp;
+}
+
+void freeMemory(ListNode* head){
+    while(head){
+        ListNode* nextNode=head->next;
+        free(head);
+        head=nextNode;
+    }
 }
