@@ -1,31 +1,28 @@
 #include<stdio.h>
 
 
-void insertion_sort(int[],int);
+void insertionSort(int arr[],int n);
 
 int main()
 {
     int arr[100];
-    int arr_indx=0;
+    int arrIndx=0;
 
     printf("Enter elements : ");
-    while(scanf("%d",&arr[arr_indx]) == 1){
-        arr_indx++;
+    while(scanf("%d",&arr[arrIndx]) == 1){
+        arrIndx++;
         if(getchar()=='\n') break;
     }
 
-    insertion_sort(arr,arr_indx);
+    insertionSort(arr,arrIndx);
 
-    for (int i = 0; i < arr_indx; i++)
+    for (int i = 0; i < arrIndx; i++)
         printf("%d ",arr[i]);
-    
-
     return 0;
 }
 
 
-void insertion_sort(int arr[],int n){
-    
+void insertionSort(int arr[],int n){
     for (int i=1;i<n;i++) {
             int key=arr[i];
             int j=i-1;
