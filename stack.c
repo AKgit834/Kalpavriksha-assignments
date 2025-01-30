@@ -14,8 +14,9 @@ stack initializeStack();
 void push(stack *stk,int data);
 int pop(stack *stk);
 int peek(stack stk);
-int size(stack stk);
+int size(stack *stk);
 int isEmpty(stack stk);
+void freeStack(stack *stk);
 
 int main()
 {
@@ -37,9 +38,10 @@ int main()
         }else if(choice == 4){
             (isEmpty(stk))?printf("Stack is empty\n"):printf("Stack is not empty\n");
         }else if(choice == 5){
-            printf("size of stack : %d\n",size(stk));
+            printf("size of stack : %d\n",size(&stk));
         }else{
             printf("Exiting\n");
+            freeStack(&stk);
             return 1;
         }
         printf("\nEnter choice : ");
@@ -66,8 +68,10 @@ int pop(stack *stk){
         printf("stack empty\n");
         return -1;
     }
+    node* toFree=stk->head; // we free the head node.
     int dataOnTop=stk->head->data;
     stk->head=stk->head->next;
+    free(toFree);
     return dataOnTop;
 }
 
@@ -84,9 +88,9 @@ int isEmpty(stack stk){
     return 1;
 }
 
-int size(stack stk){
+int size(stack *stk){
     int size=0;
-    node *temp=stk.head;
+    node *temp=stk->head;
     while(temp){
         size++;
         temp=temp->next;
@@ -94,4 +98,12 @@ int size(stack stk){
     return size;
 }
 
+void freeStack(stack *stk){
+    node *temp;
+    while (stk->head) {
+        temp = stk->head;
+        stk->head = stk->head->next;
+        free(temp);
+    }
+}
 
