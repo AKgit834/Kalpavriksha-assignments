@@ -13,34 +13,39 @@ int pop(stack *stk);
 int peek(stack stk); // there is no need to pass by reference because we are not making any changes.
 int isEmpty(stack stk);
 int size(stack stk);
+void freeStack(stack stk);
 
 int main()
 {
-    stack stack=initializeStack(); // stack initialization.
+    stack stk=initializeStack(); // stack initialization.
 
     // push operation.
-    push(&stack,1);
-    push(&stack,2);
-    push(&stack,3);
-    printf("inserted values : %d %d %d\n",stack.data[0],stack.data[1],stack.data[2]);
+    push(&stk,1);
+    push(&stk,2);
+    push(&stk,3);
+    printf("inserted values : %d %d %d\n",stk.data[0],stk.data[1],stk.data[2]);
 
     // pop operation.
-    int v1=pop(&stack);
-    int v2=pop(&stack);
-    int v3=pop(&stack);
+    int v1=pop(&stk);
+    int v2=pop(&stk);
+    int v3=pop(&stk);
     printf("removed values : %d %d %d\n",v1,v2,v3);
 
     // peek operation.
-    push(&stack,4);
-    push(&stack,7);
-    printf("value on top of stack : %d\n",peek(stack));
+    push(&stk,4);
+    push(&stk,7);
+    printf("value on top of stack : %d\n",peek(stk));
 
     //isEmpty operation.
-    (isEmpty(stack))?printf("Empty\n"):printf("Not empty\n");
+    (isEmpty(stk))?printf("Empty\n"):printf("Not empty\n");
 
     //size operation.
-    printf("size of stack : %d\n",size(stack));
+    printf("size of stack : %d\n",size(stk));
 
+
+    // program ends.
+    freeStack(stk);
+    printf("Memory freed");
     return 0;
 }
 
@@ -57,7 +62,7 @@ void push(stack *stk,int val){
     (*stk).top++;
     if((*stk).top >= (*stk).capacityofDataArr){
         (*stk).capacityofDataArr = (*stk).capacityofDataArr*2;
-        (*stk).data=(int*)realloc((*stk).data,(*stk).capacityofDataArr);
+        (*stk).data=(int*)realloc((*stk).data,sizeof(int)*(*stk).capacityofDataArr);
     }
     (*stk).data[(*stk).top]=val;
 }
@@ -89,5 +94,9 @@ int isEmpty(stack stk){
 int size(stack stk){
     if(stk.top < 0) return 0;
     return (stk.top+1);
+}
+
+void freeStack(stack stk){
+    free(stk.data);
 }
 
