@@ -10,7 +10,9 @@ typedef struct ListNode{
 
 void createLinkedList(ListNode  **head,int n);
 void printLinkedList(ListNode  *head);
+int checkValidInput(ListNode* head, int id);
 ListNode* sortBySeverity(ListNode* head);
+
 
 int main()
 {
@@ -21,7 +23,6 @@ int main()
 
     createLinkedList(&head,n);
     head=sortBySeverity(head);
-    // printLinkedList(head);
     printf("\nexit");
     
     return 0;
@@ -69,7 +70,6 @@ ListNode* sortBySeverity(ListNode* head){
             seriousListTail->next=stableList;
         }
         criticalListTail->next=seriousList;
-        // seriousListTail->next=stableList;
         printLinkedList(criticalList);
         return criticalList;
     }
@@ -85,7 +85,16 @@ ListNode* sortBySeverity(ListNode* head){
 }
 
 
-
+int checkValidInput(ListNode* head, int id) {
+    ListNode* currNode = head;
+    while (currNode) {
+        if (currNode->patientId == id) {
+            return 0;  // Duplicate found
+        }
+        currNode = currNode->next;
+    }
+    return 1;  // Valid ID
+}
 
 void createLinkedList(ListNode  **head,int n){
     int id;
@@ -96,6 +105,12 @@ void createLinkedList(ListNode  **head,int n){
         scanf("%d",&id);
         getchar();
         scanf("%[^\n]s",severity);
+
+        if (!checkValidInput(*head, id)) {
+            printf("Duplicate ID. Try again.\n");
+            while (getchar() != '\n');
+            continue;
+        }
         
         ListNode *newNode=(ListNode*)malloc(sizeof(ListNode));
         newNode->patientId=id;
@@ -106,6 +121,10 @@ void createLinkedList(ListNode  **head,int n){
             newNode->severityLevel=2;
         else if(strcmp(severity,"Stable") == 0)
             newNode->severityLevel=1;
+        else{
+            printf("Invalid Severity level !! Try again\n");
+            continue;
+        }
         
         if(!(*head)){
             *head=newNode;
