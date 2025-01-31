@@ -10,7 +10,7 @@ typedef struct stack{
 stack initializeStack();
 void push(stack *stk,int val);
 int pop(stack *stk);
-int peek(stack stk); // there is no need to pass by reference because we are not making any changes.
+int peek(stack *stk); 
 int isEmpty(stack stk);
 int size(stack stk);
 void freeStack(stack stk);
@@ -18,34 +18,31 @@ void freeStack(stack stk);
 int main()
 {
     stack stk=initializeStack(); // stack initialization.
-
-    // push operation.
-    push(&stk,1);
-    push(&stk,2);
-    push(&stk,3);
-    printf("inserted values : %d %d %d\n",stk.data[0],stk.data[1],stk.data[2]);
-
-    // pop operation.
-    int v1=pop(&stk);
-    int v2=pop(&stk);
-    int v3=pop(&stk);
-    printf("removed values : %d %d %d\n",v1,v2,v3);
-
-    // peek operation.
-    push(&stk,4);
-    push(&stk,7);
-    printf("value on top of stack : %d\n",peek(stk));
-
-    //isEmpty operation.
-    (isEmpty(stk))?printf("Empty\n"):printf("Not empty\n");
-
-    //size operation.
-    printf("size of stack : %d\n",size(stk));
-
-
-    // program ends.
-    freeStack(stk);
-    printf("Memory freed");
+    int choice;
+    
+    printf("  choices\n1. push\n2. pop\n3. peek\n4. isEmpty\n5. size\n6. exit");
+    printf("\nEnter choice : ");
+    while(scanf("%d",&choice) == 1){
+        if(choice == 1){
+            int data;
+            printf("Enter value to be inserted : ");
+            scanf("%d",&data);
+            push(&stk,data);
+        }else if(choice == 2){
+            printf("poped val : %d\n",pop(&stk));
+        }else if(choice == 3){
+            printf("peeked val : %d\n",peek(&stk));
+        }else if(choice == 4){
+            (isEmpty(stk))?printf("Stack is empty\n"):printf("Stack is not empty\n");
+        }else if(choice == 5){
+            printf("size of Stack : %d\n",size(stk));
+        }else{
+            printf("Exiting\n");
+            freeStack(stk);
+            return 1;
+        }
+        printf("\nEnter choice : ");
+    }
     return 0;
 }
 
@@ -77,12 +74,12 @@ int pop(stack *stk){
     return val;
 }
 
-int peek(stack stk){
-    if(stk.top < 0) {
+int peek(stack *stk){
+    if((*stk).top < 0) {
         printf("Underflow , stack empty\n");
         return -1;
     }
-    return stk.data[stk.top];
+    return (*stk).data[(*stk).top];
 }
 
 int isEmpty(stack stk){
