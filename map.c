@@ -8,6 +8,7 @@
 typedef struct person{
     char name[NAME_SIZE];
     int age;
+    struct person *next;
 }person;
 
 
@@ -70,16 +71,29 @@ int hashFunction(char name[]){
 
 void insert(person p){
     int indexInHashTable=hashFunction(p.name);
-    if(hashTable[indexInHashTable] != NULL){
+    if(hashTable[indexInHashTable]){
+        person *temp=hashTable[indexInHashTable];
+        person *prev=NULL; 
         // update the value if person already present.
-        if(strcmp(hashTable[indexInHashTable]->name,p.name) == 0){
-            hashTable[indexInHashTable]->age=p.age;
+        while(temp){
+            if(strcmp(temp->name,p.name) == 0){
+                temp->age=p.age;
+                return;
+            }
+            prev=temp;
+            temp=temp->next;
         }
+        person *newPerson=(person*)malloc(sizeof(person));
+        strcpy(newPerson->name,p.name);
+        newPerson->age=p.age;
+        newPerson->next=NULL;
+        prev->next=newPerson;
         return;
     }
     person *newPerson=(person*)malloc(sizeof(person));
     strcpy(newPerson->name,p.name);
     newPerson->age=p.age;
+    newPerson->next=NULL;
     hashTable[indexInHashTable]=newPerson;
 }
 
@@ -104,8 +118,17 @@ void delete(char name[]){
 
 
 void display(){
-    for (int i = 0; i < TABLE_SIZE; i++)
-        if(hashTable[i]) printf("index : %d,%s:%d\n",i,hashTable[i]->name,hashTable[i]->age);
+    for (int i = 0; i < TABLE_SIZE; i++){
+        if(hashTable[i]){
+            printf("| index : %d,%s:%d | ",i,hashTable[i]->name,hashTable[i]->age);
+            person* currPerson=hashTable[i]->next;
+            while(currPerson){
+                printf("->| index : %d,%s:%d | ",i,currPerson->name,currPerson->age);
+                currPerson=currPerson->next;
+            }
+            printf("\n");
+        }
+    }
 }
 
 
