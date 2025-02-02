@@ -99,8 +99,15 @@ void insert(person p){
 
 person* search(char name[]){
     int indexInHashTable=hashFunction(name);
-    if(hashTable[indexInHashTable] && strcmp(hashTable[indexInHashTable]->name,name) == 0)
-        return hashTable[indexInHashTable];
+    if(hashTable[indexInHashTable]){
+        person *currPerson=hashTable[indexInHashTable];
+        while(currPerson){
+            if(strcmp(currPerson->name,name) == 0){
+                return currPerson;
+            }
+            currPerson=currPerson->next;
+        }
+    }
     return NULL;
 }
 
