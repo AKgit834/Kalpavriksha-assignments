@@ -22,8 +22,6 @@ person* search(char name[]);
 int main()
 {
     int choice;
-    
-
     initHashTable();
     printf("\toperations\n1. insert\n2. Search\n3. Delete\n4. Display\n5. exit\n");
     printf("Enter choice : ");
@@ -69,9 +67,16 @@ int hashFunction(char name[]){
     return hashValue%TABLE_SIZE;
 }
 
+
 void insert(person p){
     int indexInHashTable=hashFunction(p.name);
-    if(hashTable[indexInHashTable] != NULL) return;
+    if(hashTable[indexInHashTable] != NULL){
+        // update the value if person already present.
+        if(strcmp(hashTable[indexInHashTable]->name,p.name) == 0){
+            hashTable[indexInHashTable]->age=p.age;
+        }
+        return;
+    }
     person *newPerson=(person*)malloc(sizeof(person));
     strcpy(newPerson->name,p.name);
     newPerson->age=p.age;
