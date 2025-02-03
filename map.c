@@ -18,6 +18,7 @@ void initHashTable();
 void insert(person p);
 void display();
 void delete();
+void freeMemory();
 person* search(char name[]);
 
 int main()
@@ -46,6 +47,7 @@ int main()
         }else if(choice == 4){
             display();
         }else{
+            freeMemory();
             exit(1);
         }
         printf("Enter choice : ");
@@ -113,12 +115,32 @@ person* search(char name[]){
 
 void delete(char name[]){
     int indexInHashTable=hashFunction(name);
-    if(hashTable[indexInHashTable] && strcmp(hashTable[indexInHashTable]->name,name) == 0){
-        free(hashTable[indexInHashTable]);
-        hashTable[indexInHashTable]=NULL;
-        printf("Person deleted\n");
-    }else{
-        printf("Person not found\n");
+    if(hashTable[indexInHashTable]){
+        person *currPerson=hashTable[indexInHashTable];
+        person *prev=NULL;
+        while(currPerson){
+            if(strcmp(currPerson->name,name) == 0){
+                if(currPerson->next){
+                    if(prev){
+                        prev->next=currPerson->next;
+                        free(currPerson);
+                    }else{
+                        hashTable[indexInHashTable]=currPerson->next;
+                        free(currPerson);
+                    }
+                }else if(prev){
+                    prev->next=NULL;
+                    free(currPerson);
+                }
+                else{
+                    hashTable[indexInHashTable]=NULL;
+                    free(currPerson);
+                }
+                return;
+            }
+            prev=currPerson;
+            currPerson=currPerson->next;
+        }
     }
     return;
 }
@@ -138,4 +160,14 @@ void display(){
     }
 }
 
-
+void freeMemory(){
+    for (int i = 0; i < TABLE_SIZE; i++){
+        person* currPerson = hashTable[i];
+        while (currPerson != NULL) {
+            person* temp = currPerson;
+            currPerson = currPerson->next;
+            free(temp);
+        }
+    }
+    
+}
